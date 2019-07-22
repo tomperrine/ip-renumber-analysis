@@ -13,6 +13,10 @@
 
 # from the pcap file, get source, destination and protocol
 
+# where to find the tools
+GITROOT=~tperrine/git-work
+
+
 # do this in stages so we keep some intermediate results for later use
 ##echo pcap file $1 
 
@@ -32,7 +36,7 @@ siewhois ip 4 list --table | awk '{print $3}' | grep '\.' > new-ranges.from-whoi
 cat new-ranges.from-whois extra-ranges | sort -u > all-ranges
 
 # and run all the addresses against my ranges
-./filter-my-ranges.py all-ranges sorted-destinations > non-myorg-destinations
+$GITROOT/ip-renumber-analysis/filter-my-ranges.py all-ranges sorted-destinations.from-pcap > non-myorg-destinations
 
 awk -F . '{print $1"."$2"."$3}' non-myorg-destinations | sort -u > non-myorg-subnets
 
